@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hava_durumu/utils/location.dart';
@@ -13,26 +11,38 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  late LocationHelper locationData;
-  Future<Void> getLocationData() async 
-    locationData = LocationHelper();
-    await locationData.getCurrentLocation();
+  Location location = new Location();
 
-    if (locationData.latitude == null || locationData.longitude == null) {
-      print("konum bilgileri gelmiyor.");
-    } else {
-      print("latitude: " + locationData.latitude.toString());
-      print("longitude: " + locationData.longitude.toString());
-    }
+  late LocationData _locationData;
+
+  Future<void> getLocationData() async {
+    _locationData = await location.getLocation();
+    print("Versiyon2Kod=" +
+        _locationData.altitude.toString() +
+        _locationData.latitude.toString());
+    print("Versiyon2Kod=" + _locationData.heading.toString());
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
     getLocationData();
+    getLocationData2();
   }
+
+  //-----
+  Future<void> getLocationData2() async {
+    LocationHelper locationData2 = LocationHelper();
+    await locationData2.getCurrentLocation();
+
+    if (locationData2.latitude == null || locationData2.longitude == null) {
+      print("konum bilgileri gelmiyor.");
+    } else {
+      print("latitude: " + locationData2.latitude.toString());
+      print("longitude: " + locationData2.longitude.toString());
+    }
+  }
+  //-----
 
   @override
   Widget build(BuildContext context) {
